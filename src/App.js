@@ -98,44 +98,67 @@ function App() {
   return (
     <div className="App">
       <h1>Online Code Compiler</h1>
-      <div>
-      <label>Select Language</label>
-      <select
-       value={language}
-       onChange={(e) => {
-        let response = window.confirm("Changing the language will clear the code. Do you want to continue?");
-        if(response){
-          setLanguage(e.target.value);
-        }
-        console.log(e.target.value);
-      }}
-       >
-        <option value="cpp">C++</option>
-        <option value="c">C</option>
-        <option value="py">Python</option>
-      </select>
+      
+      <div className="controls-section">
+        <div className="language-controls">
+          <label>Language:</label>
+          <select
+            value={language}
+            onChange={(e) => {
+              let response = window.confirm("Changing the language will clear the code. Do you want to continue?");
+              if(response){
+                setLanguage(e.target.value);
+              }
+            }}
+          >
+            <option value="cpp">C++</option>
+            <option value="c">C</option>
+            <option value="py">Python</option>
+          </select>
+          <button onClick={setDefaultLanguage}>Set default</button>
+        </div>
+        <button onClick={handleSubmit}>Run Code</button>
       </div>
-      <br/>
-      <div>
-        <button onClick={setDefaultLanguage}>Set default</button>
+
+      <div className="main-content">
+        <div className="editor-section">
+          <h2>Code Editor</h2>
+          <textarea
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          ></textarea>
+        </div>
+
+        <div className="output-section">
+          <h2>Output</h2>
+          <div className="output-container">
+            {status && (
+              <>
+                <h2>Status</h2>
+                <pre className={`status-${status.toLowerCase()}`}>{status}</pre>
+              </>
+            )}
+            {jobId && (
+              <>
+                <h2>Job ID</h2>
+                <pre>{`JobId: ${jobId}`}</pre>
+              </>
+            )}
+            {jobDetails && (
+              <>
+                <h2>Details</h2>
+                <pre>{renderTimeDetails()}</pre>
+              </>
+            )}
+            {output && (
+              <>
+                <h2>Program Output</h2>
+                <pre>{output}</pre>
+              </>
+            )}
+          </div>
+        </div>
       </div>
-      <br/>
-      <textarea rows = "20" cols = "75"
-       value={code} 
-       onChange={(e) => {
-        setCode(e.target.value);
-        }}></textarea>
-      <br/>
-      <button onClick={handleSubmit}>Run</button>
-      <br/>
-      <h2>Status</h2>
-      <pre>{status}</pre>
-      <h2>Job Id</h2>
-      <pre>{jobId && `JobId : ${jobId}`}</pre>
-      <h2>Details</h2>
-      <pre>{renderTimeDetails()}</pre>
-      <h2>Output</h2>
-      <pre>{output}</pre>
     </div>
   );
 }
